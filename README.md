@@ -1,1 +1,159 @@
-💧 Karınca Kolonisi Algoritması ile Ankara Su Numunesi Rota OptimizasyonuBu proje, BLG-307 Yapay Zeka Sistemleri dersi kapsamında, Ankara Çevre Bakanlığı ekiplerinin şehirdeki farklı su kaynaklarından numune toplama sürecini optimize etmek amacıyla geliştirilmiştir. Doğadan ilham alan Karınca Kolonisi Optimizasyonu (ACO) kullanılarak, lojistik maliyetler ve toplam mesafe minimize edilmiştir.Senaryo 5: Çevre Bakanlığına ait birimlerin, Ankara'daki 10 farklı göletten su numunesi toplaması için en verimli rotanın belirlenmesi hedeflenmiştir.⚙️ Algoritma ParametreleriAlgoritmanın çalışma performansı, arayüz üzerindeki kontrol paneli aracılığıyla şu parametrelerle optimize edilebilir:Karınca Sayısı: 20 (Keşif yapan ajan sayısı).İterasyon Sayısı: 50 (Döngü tekrar sayısı).Alpha (α): 1.0 (Feromon yoğunluğunun seçim üzerindeki ağırlığı).Beta (β): 2.0 (Mesafenin/Sezgiselliğin seçim üzerindeki ağırlığı).Buharlaşma Oranı: 0.5 (Eski feromon izlerinin silinme hızı).📌 Amaç FonksiyonuAlgoritma, Gezgin Satıcı Problemi (TSP) modelini kullanarak toplam rota uzunluğunu minimize etmeyi hedefler:Toplam Rota Uzunluğu = (Lokasyonlar Arası Mesafelerin Toplamı) + (Merkeze Dönüş Mesafesi).Mesafe Verisi: Google Maps API üzerinden çekilen iki nokta arasındaki gerçek sürüş mesafesidir (mode="driving").Kapsam: Bakanlık Merkez noktası ile birlikte Mogan, Eymir, Mavi Göl, Çubuk-1 ve Kurtboğazı gibi Ankara'nın 10 kritik su kaynağını kapsar.📁 Proje YapısıUygulama, modern web standartlarına uygun olarak Streamlit kütüphanesi ile geliştirilmiştir:Dosya / YapıAçıklamaAnkara_app.pyArayüz, API yönetimi ve ACO algoritma çekirdeğini içeren ana dosya.Google Maps APIMesafeleri gerçek yol verileri üzerinden çeken entegrasyon.Folium MapRotanın interaktif olarak görselleştirildiği harita katmanı.MatplotlibAlgoritmanın yakınsama (başarı) sürecini gösteren grafik yapısı.🧪 Algoritma Mekanizması1. Çekicilik ve SeçimKarıncalar bir noktadan diğerine geçerken iki ana veriyi değerlendirir:Çekicilik: Mesafe ne kadar azsa, o yolun tercih edilme değeri ($1 / Mesafe$) o kadar artar.Olasılıksal Seçim: Mevcut yoldaki feromon miktarı ve yolun kısalığına göre olasılık hesabı yapılır.2. Feromon Güncelleme ve BuharlaşmaKısa yollardan geçen karıncalar o rotaya daha fazla feromon bırakır. Her iterasyon sonunda feromonlar belirli bir oranda (decay) buharlaşır; bu durum algoritmanın yeni yollar keşfetmesini (exploration) sağlar.📊 Optimizasyon SonuçlarıAlgoritma, Google Maps API'den gelen gerçek verilerle çalıştırıldığında şu sonuçlar elde edilmiştir:En Kısa Rota: Yaklaşık 233.44 km.Yakınsama: Optimizasyon grafiğinde görüldüğü üzere, algoritma 10. iterasyondan itibaren en verimli rotaya başarıyla sabitlenmiştir.Görselleştirme: Bakanlık merkezinden başlayıp tüm göletleri gezen kapalı çevrim rotası harita üzerinde kırmızı çizgilerle sunulmuştur.👤 Hazırlayan BilgileriAd Soyad: Ulviye Gülnihal YükselÖğrenci No: 2312721035Bölüm: Isparta Uygulamalı Bilimler Üniversitesi - Bilgisayar MühendisliğiHer şey hazır! Bu do
+💧 Karınca Kolonisi Algoritması ile Ankara Su Numunesi Rota Optimizasyonu
+
+Bu proje, BLG-307 Yapay Zeka Sistemleri dersi kapsamında, Ankara Çevre Bakanlığı ekiplerinin şehirdeki farklı su kaynaklarından numune toplama sürecini optimize etmek amacıyla geliştirilmiştir.
+
+Doğadan ilham alan Karınca Kolonisi Optimizasyonu (Ant Colony Optimization – ACO) algoritması kullanılarak, toplam rota mesafesi ve lojistik maliyetlerin minimize edilmesi hedeflenmiştir.
+
+📍 Senaryo 5: Problem Tanımı
+
+Çevre Bakanlığı’na ait birimlerin, Ankara’daki 10 farklı göletten su numunesi toplaması için en verimli (en kısa) rotanın belirlenmesi amaçlanmıştır.
+
+Problem, klasik Gezgin Satıcı Problemi (TSP) modeli kapsamında ele alınmıştır.
+
+⚙️ Algoritma Parametreleri
+
+Algoritmanın çalışma performansı, Streamlit arayüzü üzerindeki kontrol paneli aracılığıyla aşağıdaki parametrelerle optimize edilebilmektedir:
+
+Karınca Sayısı: 20
+(Keşif yapan ajan sayısı)
+
+İterasyon Sayısı: 50
+(Algoritmanın tekrar sayısı)
+
+Alpha (α): 1.0
+(Feromon yoğunluğunun seçim üzerindeki etkisi)
+
+Beta (β): 2.0
+(Mesafe / sezgiselliğin seçim üzerindeki etkisi)
+
+Buharlaşma Oranı (ρ): 0.5
+(Eski feromon izlerinin silinme hızı)
+
+📌 Amaç Fonksiyonu
+
+Algoritma, TSP modeli kullanılarak toplam rota uzunluğunu minimize etmeyi hedefler:
+
+Toplam Rota Uzunlu
+g
+˘
+u
+=
+∑
+(Lokasyonlar Arası Mesafeler)
++
+Merkeze D
+o
+¨
+n
+u
+¨
+s
+¸
+ Mesafesi
+Toplam Rota Uzunlu
+g
+˘
+	​
+
+u=∑(Lokasyonlar Arası Mesafeler)+Merkeze D
+o
+¨
+n
+u
+¨
+s
+¸
+	​
+
+ Mesafesi
+Mesafe Verisi
+
+İki nokta arasındaki gerçek sürüş mesafeleri,
+
+Google Maps API üzerinden mode="driving" parametresi ile alınmıştır.
+
+Kapsam
+
+Bakanlık Merkez Noktası
+
+Mogan Gölü
+
+Eymir Gölü
+
+Mavi Göl
+
+Çubuk-1 Barajı
+
+Kurtboğazı Barajı
+
+ve Ankara’daki toplam 10 kritik su kaynağı
+
+📁 Proje Yapısı
+
+Uygulama, modern web standartlarına uygun olarak Streamlit kütüphanesi ile geliştirilmiştir:
+
+Dosya / Bileşen	Açıklama
+Ankara_app.py	Arayüz, API yönetimi ve ACO algoritma çekirdeğini içeren ana dosya
+Google Maps API	Gerçek yol mesafelerini sağlayan entegrasyon
+Folium Map	Optimum rotanın interaktif harita üzerinde görselleştirilmesi
+Matplotlib	Algoritmanın yakınsama (optimizasyon) sürecinin grafiksel gösterimi
+🧪 Algoritma Mekanizması
+1️⃣ Çekicilik ve Olasılıksal Seçim
+
+Karıncalar bir noktadan diğerine geçerken iki temel kriteri dikkate alır:
+
+Çekicilik (Heuristic):
+Mesafe azaldıkça yolun çekiciliği artar.
+
+C
+¸
+ekicilik
+=
+1
+Mesafe
+C
+¸
+	​
+
+ekicilik=
+Mesafe
+1
+	​
+
+
+Olasılıksal Seçim:
+Yol seçimi, mevcut feromon miktarı ve çekicilik değerine bağlı olarak olasılıksal şekilde yapılır.
+
+2️⃣ Feromon Güncelleme ve Buharlaşma
+
+Daha kısa rotalardan geçen karıncalar, ilgili yollara daha fazla feromon bırakır.
+
+Her iterasyon sonunda feromonlar belirli bir oranda buharlaşır (decay).
+
+Bu mekanizma:
+
+Yerel minimumlara takılmayı önler
+
+Yeni rotaların keşfedilmesini (exploration) sağlar
+
+📊 Optimizasyon Sonuçları
+
+Algoritma, Google Maps API’den alınan gerçek sürüş mesafeleri ile çalıştırıldığında aşağıdaki sonuçlar elde edilmiştir:
+
+En Kısa Rota: ≈ 233.44 km
+
+Yakınsama:
+Optimizasyon grafiğinde görüldüğü üzere, algoritma yaklaşık 10. iterasyondan itibaren en verimli rotaya başarıyla sabitlenmiştir.
+
+Görselleştirme:
+Bakanlık merkezinden başlayıp tüm göletleri kapsayan kapalı çevrim rota, harita üzerinde kırmızı çizgilerle gösterilmiştir.
+
+👤 Hazırlayan Bilgileri
+
+Ad Soyad: Ulviye Gülnihal Yüksel
+
+Öğrenci No: 2312721035
+
+Bölüm:
+Isparta Uygulamalı Bilimler Üniversitesi
+Bilgisayar Mühendisliği
